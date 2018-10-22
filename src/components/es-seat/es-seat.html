@@ -161,19 +161,10 @@
                                         </div>
                                     </div>
 
-                                    <h1>remove prohibited: {{ !vm.checkServiceRemovalProhibited('seat', passengerNum,
-                                        flightNum) }}</h1>
-                                    <p>passenger: {{ passengerNum }}</p>
-                                    <p>flight: {{ flightNum }}</p>
-                                    <p>if selected = {{
-                                        !!vm.service.selectedSeatsByPassengerSegments[passengerNum][flightNum] }}</p>
-                                    <p>show link = {{
-                                        vm.service.selectedSeatsByPassengerSegments[passengerNum][flightNum] &&
-                                        !vm.checkServiceRemovalProhibited('seat', passengerNum, flightNum) }}</p>
-
-                                    <a ng-if="vm.service.selectedSeatsByPassengerSegments[passengerNum][flightNum]  && !vm.checkServiceRemovalProhibited('seat', passengerNum, flightNum)"
+                                    <a ng-if="!vm.checkServiceRemovalProhibited('seat', passengerNum, flightNum)"
                                        style="display: none" href
                                        fancybox="popupSeatMapConfirm-{{flightNum}}-{{passengerNum}}"
+                                       show-seat-confirm-popup
                                        class="popup_js"
                                        id="js-seatmap-limitation-open-popup-{{flightNum}}-{{passengerNum}}"></a>
 
@@ -239,7 +230,7 @@
                                                         {{ 'web.extraServices.seat.autoAssignedSeat' | aliasStatic}}
                                                     </li>
                                                     <li ng-repeat="rfiscsPriceItem in vm.service.itemsByPassengerSegments[vm.selectedPassenger][vm.selectedFlight][0] track by $index"
-                                                        class="rfiscs-seat-label">
+                                                        class="rfiscs-seat-label rfiscs-seat-label-{{ rfiscsPriceItem.rfisc }}">
                                                         <span class="seat-rfisc-{{ rfiscsPriceItem.rfisc }}"></span>
                                                         <span class="rfiscs-seat-label-cost"
                                                               ng-bind-html="{ value: rfiscsPriceItem.price, currency: rfiscsPriceItem.currency } | price"></span>
