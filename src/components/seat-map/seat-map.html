@@ -25,7 +25,11 @@
                                  selected-flight="{{vm.selectedFlight}}"
                                  selected-passenger="{{vm.selectedPassenger}}"
                                  ng-click="vm.setPassengerFlightSeat(item, cabin.allowed, row.number)"
-                                 ng-class="{ seat_disabled: (!item.available || !cabin.allowed), active: vm.isSelectedByActivePassenger(row.number + item.number), selectedByOrderPassenger: vm.isSelectedByOrderPassenger(row.number + item.number), 'seat-auto-assigned': item.autoAssigned, 'js-seat-not-for-all': (item.properties.indexOf('not_for_child') > -1 || item.properties.indexOf('not_for_infant') > -1)}">
+                                 ng-class="{ seat_disabled: (!item.available || !cabin.allowed),
+                                     active: vm.isSelectedByActivePassenger(row.number + item.number),
+                                     selectedByOrderPassenger: vm.isSelectedByOrderPassenger(row.number + item.number),
+                                     'seat-auto-assigned': item.autoAssigned,
+                                     'js-seat-not-for-all': (item.properties.indexOf('not_for_child') > -1 || item.properties.indexOf('not_for_infant') > -1 || item.properties.indexOf('comfortable') > -1 || item.rfisc === '0B5')}">
 
                                 <div ng-if="item.available && cabin.allowed" class="seatName">
                                             <span class="seatName__price">
@@ -35,7 +39,7 @@
                                                 <wrap ng-bind-html="{ value: item.cost, currency: item.currency } | price"></wrap>
                                             </wrap>
                                             </span>
-                                    <div ng-if="item.properties.indexOf('chargeable') > -1 || item.properties.indexOf('not_for_infant') > -1"
+                                    <div ng-if="item.properties.indexOf('comfortable') > -1 || item.properties.indexOf('not_for_infant') > -1 || item.rfisc === '0B5'"
                                          class="seat-info-not_for_anybody">
                                         <wrap ng-bind-html="'web.seatMap.not_for_anybody' | aliasStatic"></wrap>
                                     </div>
