@@ -1,0 +1,1 @@
+require('./directives/show-seat-confirm-popup');
