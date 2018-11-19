@@ -111,6 +111,8 @@
 															autocomplete="off"
 															ng-model="passenger.lastName"
                                                             ng-blur="vm.lastNameBlurHandler(passengerNumber)"
+															   uppercase-by-input
+                                                               prevent-browser-suggestions
 															required
 															ng-pattern="vm.passengersCheck.passengerLastNameRegexp"
 															class="textInp inp-animate-placeholder"
@@ -131,6 +133,8 @@
 															autocomplete="off"
 															ng-model="passenger.firstName"
                                                             ng-blur="vm.firstNameBlurHandler(passengerNumber)"
+															   uppercase-by-input
+															   prevent-browser-suggestions
 															required
 															ng-pattern="vm.passengersCheck.passengerFirstNameRegexp"
 															class="textInp inp-animate-placeholder"
@@ -157,6 +161,8 @@
 															data-max-date="{{ vm.rangeBirthByPassenger[passengerNumber].to }}"
 															class="textInp inp-animate-placeholder"
 															error-highlight="{{vm.submitTouched}}"
+															   placeholder="{{ 'web.passengersInfo.dateOfBirth' | aliasStatic}}"
+															   prevent-browser-suggestions
                                                             ui-mask="99.99.9999"
                                                             model-view-value="true"
                                                             ui-mask-placeholder="{{ 'web.datePattern' | aliasStatic}}"/>
@@ -250,7 +256,7 @@
 												</td>
 
 												<td>
-													<div class="inp inp-animate-outer"
+													<div class="inp inp-animate-outer">
 														<error-message
 															control="vm.passengerForms[passengerNumber].documentNumber"
 															touched="vm.submitTouched">
@@ -378,7 +384,64 @@
 													</div>
 												</td>
 												<td class="mobileHide"></td>
-												<td class="mobileHide"></td>
+                      <td class="mobileHide"></td>
+                    </tr>
+                    <tr ng-if="vm.groupedSpecialNeedSsrs.length && passenger.type != 'INFANT' ">
+                      <td colspan="4">
+                        <a href class="link" ng-click="vm.switchSpecialNeed(passengerNumber)">
+                          <span ng-if="!passenger.hasSpecialNeed">
+                            {{ 'web.passengersInfo.specialNeed.select' | aliasStatic }}
+                          </span>
+                          <span ng-if="passenger.hasSpecialNeed">
+                            {{ 'web.passengersInfo.specialNeed.deselect' | aliasStatic }}
+                          </span>
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4">
+                        <div class="special-need-list" ng-if="passenger.hasSpecialNeed">
+                          <div class="special-need-list__item" ng-repeat="item in vm.groupedSpecialNeedSsrs track by $index">
+
+                            <div ng-if="item.ssrs.length == 1" class="inp">
+                              <div class="customCheckbox">
+                                <label>
+                                  <input type="checkbox" name="specialNeedSsrs"
+                                        ng-model="passenger.specialNeedSsrs[item.ssrs[0]]" />
+                                  <span></span>
+                                  {{ 'web.passengersInfo.specialNeed.ssr.' | aliasWithPrefix:item.ssrs[0] }}
+                                </label>
+                              </div>
+                            </div>
+
+                            <div ng-if="item.ssrs.length > 1" class="special-need-list__group">
+                              <div class="customCheckbox">
+                                <label>
+                                  <input type="checkbox" name="specialNeedGroup"
+                                        ng-change="vm.specialNeedGroupChangeHandler(passengerNumber, item.group)"
+                                        ng-model="passenger.specialNeedGroup[item.group]" />
+                                  <span></span>
+                                  {{ 'web.passengersInfo.specialNeed.group.' | aliasWithPrefix:item.group }}
+                                </label>
+                              </div>
+                              <div ng-class="{ 'special-need-list__group-items_active': passenger.specialNeedGroup[item.group] }" class="special-need-list__group-items">
+                                <div ng-repeat="ssr in item.ssrs track by $index" class="inp">
+                                  <div class="radioBtn">
+                                    <label>
+                                      <input type="radio"
+                                            ng-model="passenger.specialNeedGroupSsrs[item.group]"
+                                            ng-value="ssr"/>
+                                      <span></span>
+                                      {{ 'web.passengersInfo.specialNeed.ssr.' | aliasWithPrefix:ssr }}
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </td>
 											</tr>
 										</tbody>
 									</table>
@@ -479,6 +542,32 @@
 													</div>
 												</td>
                                             </tr>
+
+											<tr ng-if=" ('customer.showIsSmsSend' | param) || ('customer.showIsEmailSend' | param) ">
+												<td>
+													<div class="inp" ng-if=" 'customer.showIsSmsSend' | param ">
+														<div class="customCheckbox">
+															<label>
+																<input type="checkbox" ng-model="vm.customer.sendSms">
+																<span></span>
+																{{ 'web.customerInfo.sendSms' | aliasStatic}}
+															</label>
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="inp" ng-if=" 'customer.showIsEmailSend' | param ">
+														<div class="customCheckbox">
+															<label>
+																<input type="checkbox" ng-model="vm.customer.sendEMail">
+																<span></span>
+																{{ 'web.customerInfo.sendEMail' | aliasStatic}}
+															</label>
+														</div>
+													</div>
+												</td>
+											</tr>
+
 											<tr ng-if="!vm.authoriseCustomer && vm.allowCreateAccount && vm.customer.createAccount">
                                                 <td>
 													<div class="inp">
