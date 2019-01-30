@@ -8,10 +8,28 @@
         <div class="wrap">
             <div class="searchSteps__i">
                 <ol>
-                    <li class="prev"><a href="{{ 'site.mainPageUrl' | param }}">{{ 'web.steps.search' | aliasStatic}}</a></li>
-                    <li class="prev"><a href="#{{$root.ROUTES.SEARCH}}">{{ 'web.steps.selectVariant' | aliasStatic}}</a></li>
+          <li class="prev">
+            <a href="{{ 'web.site.firstStepUrl' | aliasStatic }}">
+              {{ 'web.steps.search' | aliasStatic}}
+            </a>
+          </li>
+          <li class="prev">
+            <a href="#{{$root.ROUTES.SEARCH}}">
+              {{ 'web.steps.selectVariant' | aliasStatic}}
+            </a>
+          </li>
                     <li class="active">
-                        {{ (vm.passengers.length == 1) ? ( 'web.steps.passenger' | aliasStatic) : ( 'web.steps.passengers' | aliasStatic) }}
+            {{ (vm.passengers.length == 1) ? ( 'web.steps.passenger' | aliasStatic) :
+            ( 'web.steps.passengers' | aliasStatic) }}
+          </li>
+          <li>
+            {{ 'web.steps.extraServices' | aliasStatic}}
+          </li>
+          <li>
+            {{ 'web.steps.payment' | aliasStatic}}
+          </li>
+          <li>
+            {{ 'web.steps.order' | aliasStatic}}
                     </li>
                     <li>{{ 'web.steps.extraServices' | aliasStatic}}</li>
                     <li>{{ 'web.steps.payment' | aliasStatic}}</li>

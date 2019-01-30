@@ -94,12 +94,17 @@
                                     <div class="route__plane">
                                         <i class="icon_plane"></i>
                                     </div>
-                                    <geo-marker prefix="arr__point" key="es-seat" city="flight.destinationcity"
-                                                cityname="flight.destinationcityName" port="flight.destinationport"
-                                                portname="flight.destinationportName"></geo-marker>
+                                        <geo-marker prefix="arr__point" key="es-seat" city="flight.destinationcity"  cityname="flight.destinationcityName" port="flight.destinationport"  portname="flight.destinationportName"></geo-marker>
+                                    </div>
+                                </td>
+                                <td ng-if="vm.service.unavailableBecauseOfCheckInBySegments[flightNum]" colspan="{{ vm.orderInfo.passengers.length }}">
+                                    <div class="message_unavailableBecauseOfCheckIn">
+                                        <span ng-if="vm.isBookingScreen" ng-bind-html=" 'web.extraServices.seat.unavailableBecauseOfCheckIn.booking' | aliasStatic "></span>
+                                        <span ng-if="!vm.isBookingScreen" ng-bind-html=" 'web.extraServices.seat.unavailableBecauseOfCheckIn.addServices' | aliasStatic "></span>
                                 </div>
                             </td>
                             <td ng-repeat="(passengerNum, passenger) in vm.orderInfo.passengers"
+                                    ng-if="!vm.service.unavailableBecauseOfCheckInBySegments[flightNum]"
                                 ng-class="{ active: vm.selectedFlight == flightNum && vm.selectedPassenger == passengerNum }">
                                 <wrap ng-if="vm.service.availableByPassengerSegments[passengerNum][flightNum]">
                                     <a href ng-click="vm.selectFlightPassenger(flightNum, passengerNum)"
@@ -122,8 +127,7 @@
                                           ng-bind-html="{ value: vm.service.selectedSeatsByPassengerSegments[passengerNum][flightNum].totalPrice, currency: vm.service.selectedSeatsByPassengerSegments[passengerNum][flightNum].currency } | price">
                                         </span>
                                     <a ng-if="vm.service.selectedSeatsByPassengerSegments[passengerNum][flightNum]  && !vm.checkServiceRemovalProhibited('seat', passengerNum, flightNum)"
-                                       href ng-click="vm.removePassengerFlightSeat(passengerNum, flightNum)"
-                                       class="btn-remove js-seatmap-remove-{{flightNum}}-{{passengerNum}}">
+                                            href ng-click="vm.removePassengerFlightSeat(passengerNum, flightNum)" class="btn-remove">
                                             <span class="infoBoxWrap">
                                                 <i class="icon_remove"></i>
                                                 <span class="infoBox">
@@ -224,23 +228,21 @@
                                                         <span></span>
                                                         {{ 'web.extraServices.seat.disabled' | aliasStatic}}
                                                     </li>
-                                                    <li ng-if="vm.seatMap.hasFreeAndAutoAssignedSeat"
-                                                        class="seat-auto-assigned">
+                                                        <li ng-if="vm.seatMap.hasAutoAssignedSeat && vm.seatMap.hasFreeAndAutoAssignedSeat" class="seat-auto-assigned">
+                                                            <span></span>
+                                                            {{ 'web.extraServices.seat.freeAndAutoAssignedSeat' | aliasStatic}}
+                                                        </li>
+                                                        <li ng-if="vm.seatMap.hasAutoAssignedSeat && !vm.seatMap.hasFreeAndAutoAssignedSeat" class="seat-auto-assigned">
                                                         <span></span>
                                                         {{ 'web.extraServices.seat.autoAssignedSeat' | aliasStatic}}
                                                     </li>
-                                                    <li ng-repeat="rfiscsPriceItem in vm.service.itemsByPassengerSegments[vm.selectedPassenger][vm.selectedFlight][0] track by $index"
-                                                        class="rfiscs-seat-label rfiscs-seat-label-{{ rfiscsPriceItem.rfisc }}">
-                                                        <span class="seat-rfisc-{{ rfiscsPriceItem.rfisc }}"></span>
-                                                        <span class="rfiscs-seat-label-cost"
-                                                              ng-bind-html="{ value: rfiscsPriceItem.price, currency: rfiscsPriceItem.currency } | price"></span>
-                                                        <span ng-if=" 'extraServices.showSeatMapLegendTitleLabel' | param "
-                                                              class="rfiscs-seat-label-title">
-                                                                {{ rfiscsPriceItem.title }}
+                                                        <li ng-repeat="svc in vm.seatMap.svcs track by $index" class="rfiscs-seat-label">
+                                                            <span class="color-marker seat-rfisc-{{ svc.rfisc }} seat-map-color-group-{{ svc.index }}"></span>
+                                                            <span class="rfiscs-seat-label-cost" ng-bind-html="{ value: svc.cost, currency: svc.currency } | price"></span>
+                                                            <span ng-if=" 'extraServices.showSeatMapLegendTitleLabel' | param " class="rfiscs-seat-label-title">
+                                                                {{ svc.title }}
                                                             </span>
-                                                        <span ng-if=" 'extraServices.showSeatMapLegendDescriptionLabel' | param "
-                                                              class="rfiscs-seat-label-description"
-                                                              ng-bind-html=" rfiscsPriceItem.description | aliasDynamic "></span>
+                                                            <span  ng-if=" 'extraServices.showSeatMapLegendDescriptionLabel' | param " class="rfiscs-seat-label-description" ng-bind-html=" svc.description | aliasDynamic "></span>
                                                     </li>
                                                     <wrap ng-if="vm.hasAlias('web.extraServices.seat.customLabels')"
                                                           ng-bind-html=" 'web.extraServices.seat.customLabels' | aliasStatic"></wrap>
@@ -389,9 +391,16 @@
                                             <div class="route__arr">
                                                 <span class="route__arr__city">{{ flight.destinationport || flight.destinationcity }}</span>
                                             </div>
+                                            </div>
+                                        </td>
+                                        <td ng-if="vm.service.unavailableBecauseOfCheckInBySegments[flightNum]" colspan="{{ vm.orderInfo.passengers.length }}">
+                                            <div class="message_unavailableBecauseOfCheckIn">
+                                                <span ng-if="vm.isBookingScreen" ng-bind-html=" 'web.extraServices.seat.unavailableBecauseOfCheckIn.booking' | aliasStatic "></span>
+                                                <span ng-if="!vm.isBookingScreen" ng-bind-html=" 'web.extraServices.seat.unavailableBecauseOfCheckIn.addServices' | aliasStatic "></span>
                                         </div>
                                     </td>
                                     <td ng-repeat="(passengerNum, passenger) in vm.orderInfo.passengers"
+                                            ng-if="!vm.service.unavailableBecauseOfCheckInBySegments[flightNum]"
                                         ng-class="{ active: vm.selectedFlight == flightNum && vm.selectedPassenger == passengerNum }">
                                         <wrap ng-if="vm.service.availableByPassengerSegments[passengerNum][flightNum]">
                                             <a href fancybox="popupSeat"
