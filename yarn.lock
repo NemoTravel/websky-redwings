@@ -19,6 +19,11 @@
     normalize-path "^2.0.1"
     through2 "^2.0.3"
 
+"@nemo.travel/websky-utils@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@nemo.travel/websky-utils/-/websky-utils-0.0.17.tgz#e27fff8b1e4ba38912fc7f270078b10aa7a94deb"
+  integrity sha512-uq2vQzfLGqqocDoka4vW18Lw4zF07XczxKi8FU8HVtjQ4MecoxoFxlXMCdypperIwdb0stKKK2sAxKRnZxFXWA==
+
 JSONStream@^1.0.3:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.4.tgz#615bb2adb0cd34c8f4c447b5f6512fa1d8f16a2e"
