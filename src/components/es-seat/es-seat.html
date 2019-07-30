@@ -13,7 +13,7 @@
                             <div class="name">
                                 <h2>
                                     {{ 'web.extraServices.seat.header' | aliasStatic}}
-                                    <a href fancybox="popupAlias" data-popup-alias="web.extraServicesRules.seat">
+                                        <a href modal-link="popup-alias" data-popup-alias="web.extraServicesRules.seat">
                                             <span class="infoBoxWrap">
                                                 <i class="icon_info"></i>
                                                 <span class="infoBox">
@@ -310,7 +310,7 @@
                             <td>
                                 <div class="name">
                                     {{ 'web.extraServices.seat.header' | aliasStatic}}
-                                    <a href fancybox="popupAlias" data-popup-alias="web.extraServicesRules.seat">
+                                        <a href modal-link="popup-alias" data-popup-alias="web.extraServicesRules.seat">
                                         <i class="icon_info"></i>
                                     </a>
                                 </div>
@@ -403,8 +403,7 @@
                                             ng-if="!vm.service.unavailableBecauseOfCheckInBySegments[flightNum]"
                                         ng-class="{ active: vm.selectedFlight == flightNum && vm.selectedPassenger == passengerNum }">
                                         <wrap ng-if="vm.service.availableByPassengerSegments[passengerNum][flightNum]">
-                                            <a href fancybox="popupSeat"
-                                               ng-click="vm.selectFlightPassenger(flightNum, passengerNum)"
+                                                <a href ng-click="vm.selectFlightPassenger(flightNum, passengerNum); vm.showMobilePopup = true;"
                                                class="passengersTable__link"
                                                ng-class="{ passengersTable__link_empty: !vm.service.selectedSeatsByPassengerSegments[passengerNum][flightNum], passengersTable__link_select: (!vm.service.selectedSeatsByPassengerSegments[passengerNum][flightNum] && vm.selectedFlight == flightNum && vm.selectedPassenger == passengerNum) }">
                                                 <wrap ng-if="!vm.service.selectedSeatsByPassengerSegments[passengerNum][flightNum] && (vm.selectedFlight == flightNum && vm.selectedPassenger == passengerNum)">
@@ -450,8 +449,7 @@
                                         </wrap>
                                         <wrap ng-if="vm.service.issuedSeatsByPassengerSegments[passengerNum][flightNum]">
                                             {{ 'web.extraServices.seat.issuedSeatLabel' | aliasStatic}}
-                                            <a href fancybox="popupSeat"
-                                               ng-click="vm.selectFlightPassenger(flightNum, passengerNum)"
+                                                <a href ng-click="vm.selectFlightPassenger(flightNum, passengerNum); vm.showMobilePopup = true;"
                                                class="passengersTable__link">
                                                 {{
                                                 vm.service.issuedSeatsByPassengerSegments[passengerNum][flightNum].value
@@ -483,7 +481,8 @@
         </div>
     </div>
 
-    <popup-seat map="vm.seatMap"
+    <popup-seat ng-if="vm.showMobilePopup"
+        map="vm.seatMap"
                 sun="vm.sunInfoByFlights[vm.selectedFlight]"
                 order="vm.orderInfo"
                 passenger="vm.selectedPassenger"
@@ -494,6 +493,7 @@
                 selected="vm.service.selectedSeatsByPassengerSegments"
                 issued="vm.service.issuedSeatsByPassengerSegments"
                 items="vm.service.itemsByPassengerSegments"
+        on-close="vm.showMobilePopup = false;"
                 available-passengers-count="vm.getAvailablePassengersCount(vm.service.availableByPassengerSegments)"
                 subgroups="vm.service.subgroups">
     </popup-seat>
